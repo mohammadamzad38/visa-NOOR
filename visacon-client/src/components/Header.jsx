@@ -1,6 +1,11 @@
+import { useContext } from "react";
 import { Links, NavLink } from "react-router-dom";
+import { AuthContext } from "../AuthProvider";
 
 export default function Header() {
+  const { user } = useContext(AuthContext);
+
+  console.log("this is only", user);
   const links = (
     <>
       <li>
@@ -52,9 +57,15 @@ export default function Header() {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
-      <div className="navbar-end">
-        <a className="btn">Sig-Up</a>
-      </div>
+      {user ? (
+        `${user.photo}`
+      ) : (
+        <div className="navbar-end">
+          <a href="/signup" className="btn">
+            Sign-Up
+          </a>
+        </div>
+      )}
     </div>
   );
 }
