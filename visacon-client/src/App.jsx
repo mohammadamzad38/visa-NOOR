@@ -1,7 +1,9 @@
 function App() {
   return (
-    <div>
-      <h2 className="text-xl font-bold">This is application</h2>
+    <div className="h-screen">
+      <h2 className="font-bold text-5xl text-center mt-20">
+        This is application Home Page
+      </h2>
     </div>
   );
 }

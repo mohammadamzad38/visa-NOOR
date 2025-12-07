@@ -1,9 +1,13 @@
 import { useContext } from "react";
 import { AuthContext } from "../AuthProvider";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Signin() {
-  const { signinUser, setUser } = useContext(AuthContext);
+  const { signinUser, setUser, googleSignIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const handleSignIn = async (e) => {
     e.preventDefault();
 
@@ -28,6 +32,7 @@ export default function Signin() {
         timer: 1000,
       });
       form.reset();
+      navigate("/home");
     }
   };
   return (
@@ -36,7 +41,7 @@ export default function Signin() {
       <form
         onSubmit={handleSignIn}
         type="submit"
-        className="border mx-auto w-2/5 rounded-xl flex flex-col py-10 items-center bg-[#202C35]"
+        className="border mx-auto w-2/5 rounded-xl flex flex-col pt-10 items-center bg-[#202C35]"
       >
         <div className="flex flex-col space-y-2 mb-4 w-3/5">
           <label>Email *</label>
@@ -70,6 +75,16 @@ export default function Signin() {
           Sign-In
         </button>
       </form>
+      <button
+        type="button"
+        onClick={() => {
+          googleSignIn(), navigate("/home");
+        }}
+        className="btn flex justify-center mx-auto"
+      >
+        <FcGoogle className="mr-1 text-xl" />
+        SignIn With Google
+      </button>
     </div>
   );
 }

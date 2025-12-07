@@ -1,11 +1,14 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Links, NavLink } from "react-router-dom";
 import { AuthContext } from "../AuthProvider";
 
 export default function Header() {
-  const { user } = useContext(AuthContext);
+  const { user, logOut, loading } = useContext(AuthContext);
+  const [hoverd, setHoverd] = useState(false);
 
-  console.log("this is only", user);
+  if (loading) {
+    return <p className="text-[#E29198]">Loading.....</p>;
+  }
   const links = (
     <>
       <li>
@@ -58,10 +61,31 @@ export default function Header() {
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       {user ? (
-        `${user.photo}`
+        <div>
+          <div
+            onMouseEnter={() => setHoverd(true)}
+            onMouseLeave={() => setTimeout(() => setHoverd(false), 2000)}
+            className="text-white max-w-[150px] overflow-hidden px-4 py-2 rounded-t-2xl  bg-[#8DB170] cursor-pointer"
+          >
+            {user.photoURL ? <>{user.photoURL}</> : "No Image"}
+          </div>
+          {hoverd ? (
+            <div className="p-5 rounded-b-xl bg-[#86ADC4]">
+              <p>{user.name}</p>
+              <button onClick={() => logOut()} className="btn">
+                Logout
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
       ) : (
-        <div className="navbar-end">
-          <a href="/signup" className="btn">
+        <div className="navbar-end space-x-4 ">
+          <a href="/signin" className="btn bg-[#476A49]">
+            Sign-In
+          </a>
+          <a href="/signup" className="btn bg-[#2D4952]">
             Sign-Up
           </a>
         </div>
