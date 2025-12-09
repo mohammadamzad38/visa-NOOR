@@ -18,12 +18,13 @@ export default function Signin() {
 
     const result = await signinUser(email, password);
     const logedUser = result.user;
-    setUser(logedUser);
 
     const res = await fetch("http://localhost:5000/users");
     const users = await res.json();
 
     const matchedUser = users.find((u) => u.email === logedUser.email);
+    setUser(matchedUser);
+
     if (matchedUser) {
       Swal.fire({
         position: "center",
@@ -32,7 +33,7 @@ export default function Signin() {
         timer: 1000,
       });
       form.reset();
-      navigate("/home");
+      navigate("/");
     }
   };
   return (

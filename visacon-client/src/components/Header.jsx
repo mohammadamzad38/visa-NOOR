@@ -5,14 +5,13 @@ import { AuthContext } from "../AuthProvider";
 export default function Header() {
   const { user, logOut, loading } = useContext(AuthContext);
   const [hoverd, setHoverd] = useState(false);
-
   if (loading) {
     return <p className="text-[#E29198]">Loading.....</p>;
   }
   const links = (
     <>
       <li>
-        <NavLink to="/home">Home</NavLink>
+        <NavLink to="/">Home</NavLink>
       </li>
       <li>
         <NavLink to="/all-visa">All visas</NavLink>
@@ -67,11 +66,19 @@ export default function Header() {
             onMouseLeave={() => setTimeout(() => setHoverd(false), 2000)}
             className="text-white max-w-[150px] overflow-hidden px-4 py-2 rounded-t-2xl  bg-[#8DB170] cursor-pointer"
           >
-            {user.photoURL ? <>{user.photoURL}</> : "No Image"}
+            {user.photoURL ? (
+              <img
+                className="w-10 h-10 rounded-full "
+                src={user.photoURL}
+                alt={user.displayName}
+              />
+            ) : (
+              "No Image"
+            )}
           </div>
           {hoverd ? (
-            <div className="p-5 rounded-b-xl bg-[#86ADC4]">
-              <p>{user.name}</p>
+            <div className="p-5 rounded-b-xl space-y-2 bg-[#86ADC4]">
+              <p>Name: {user.displayName}</p>
               <button onClick={() => logOut()} className="btn">
                 Logout
               </button>

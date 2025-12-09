@@ -6,7 +6,8 @@ import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
 
 export default function Signup() {
-  const { createUser, googleSignIn } = useContext(AuthContext);
+  const { createUser, googleSignIn, setUser, UpdatedData } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
@@ -42,32 +43,25 @@ export default function Signup() {
       const result = await createUser(email, password);
       const newUser = result.user;
 
-      const userInfo = {
-        name,
-        email,
-        password,
-        photo,
-        uid: newUser.uid,
-      };
-
       await fetch("http://localhost:5000/users", {
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(userInfo),
+        body: JSON.stringify(newUser),
       });
-
+      setUser(newUser);
+      UpdatedData({ displayName: name, photoURL: photo });
       Swal.fire({
         position: "center",
         icon: "success",
-        title: `Congratulations ${userInfo.name}`,
+        title: `Congratulations ${newUser.name}`,
         text: "Your account has been created successfully",
         timer: 1500,
       });
 
       form.reset();
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       setResponseError(err.message);
     }
