@@ -26,6 +26,7 @@ async function run() {
     const database = client.db("visaCON");
 
     const userCollections = client.db("visaCON").collection("users");
+    const visaCollections = database.collection("allVisa");
 
     // Users Data API
 
@@ -46,6 +47,22 @@ async function run() {
     app.get("/users", async (req, res) => {
       const cursor = userCollections.find();
       const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // Visa data API
+
+    // Add Visa API
+
+    app.post("/add-visa", async (req, res) => {
+      const visaProfile = req.body;
+      const result = await visaCollections.insertOne(visaProfile);
+      res.send(result);
+    });
+
+    app.get("/get-visa", async (req, res) => {
+      const getAll = visaCollections.find();
+      const result = await getAll.toArray();
       res.send(result);
     });
 
